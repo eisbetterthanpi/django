@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <h1>contact.html</h1>
+
+  {% if submitted %}
+    <p class="success">Your message was submitted successfully. Thank you.</p>
+  {% else %}
+    <form action="" method="post" novalidate>
+    <table>
+      <!-- {{ form.as_table }} -->
+      {{ form }}
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="Submit"></td>
+      </tr>
+    </table>
+    {% csrf_token %}
+    </form>
+  {% endif %}
+
+</body>
+</html>

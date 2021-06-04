@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>😬</title>
+</head>
+<body>
+  <h1>anime.html</h1>
+
+    <form action="" method="post" novalidate>
+    <table>
+      {{ form }}
+      <tr>
+        <!-- <td>&nbsp;</td> -->
+        <!-- <td><input type="submit" value="Submit"></td> -->
+        <!-- <input type="submit" name="btn_l" value="left"><img src={{ img1 }}></dir></input>
+        <input type="submit" name="btn_r" value="right"><img src={{ img2 }}></dir></input> -->
+        <button type="submit" name="btn_l" value="left"><img src={{ img1 }}></dir></button>
+        <button type="submit" name="btn_r" value="right"><img src={{ img2 }}></dir></button>
+      </tr>
+    </table>
+    {% csrf_token %}
+    </form>
+
+  {% if val %}
+  <p class="success"> Thank you. {{ val }}</p>
+  {% endif %}
+  <!-- <img src={{ img1 }}></dir>
+  <img src={{ img2 }}></dir> -->
+</body>
+</html>

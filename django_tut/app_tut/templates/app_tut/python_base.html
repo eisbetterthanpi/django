@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>😬</title>
+</head>
+<body>
+  <h1>python base.html</h1>
+
+    <form action="" method="post" novalidate>
+    <table>
+      {{ form }}
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="Submit"></td>
+      </tr>
+    </table>
+    {% csrf_token %}
+    </form>
+
+  {% if outval %}
+  <p class="success"> Thank you. {{ outval }}</p>
+  {% endif %}
+</body>
+</html>
