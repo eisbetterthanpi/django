@@ -7,9 +7,9 @@ def setup_anime_colab():
     options = webdriver.ChromeOptions()
 
     # og fthem(linux server)
-    WINDOW_SIZE = "1920,1080"
-    options.add_argument("--headless")
-    options.add_argument("--window-size=%s" % WINDOW_SIZE)
+    # WINDOW_SIZE = "1920,1080"
+    # options.add_argument("--headless")
+    # options.add_argument("--window-size=%s" % WINDOW_SIZE)
     options.add_argument('--no-sandbox')
 
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
@@ -21,6 +21,7 @@ def setup_anime_colab():
     # # options.add_argument("--user-data-dir=true")
     # options.add_argument("--allow-running-insecure-content")
     options.add_argument('--user-data-dir=F:/selflearn/user-data-django')
+    # F:\selflearn\temp.py remake user-data here
 
     # chrome_options.add_argument("user-data-dir=C:/Users/matth/AppData/Local/Google/Chrome/User Data/") #for same as local own
     CHROMEDRIVER_PATH = 'C:/Users/matth/AppData/Local/Programs/Python/Python37/Lib/site-packages/selenium/webdriver/chromedriver.exe'
@@ -37,7 +38,10 @@ def setup_anime_colab():
         fix_hairline=True,
         )
 
-    driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO')
+    hour = time.strftime("%H")
+    authuser=int(hour)//8
+    # driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO')
+    driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO?authuser={}'.format(authuser)) #0,1,2 bob,derek,archive
 
     # time.sleep(3)
     from selenium.webdriver.support.ui import WebDriverWait
@@ -47,8 +51,12 @@ def setup_anime_colab():
 
     # print(driver.title)
     # driver.find_element_by_xpath("command='runall'").click() #this is from 1
-    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//colab-run-button)[1]")))
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "(//colab-run-button)[1]")))
     driver.find_element_by_xpath("(//colab-run-button)[1]").click() #[this] is from 1
+
+    # notebook not authored by google
+    if driver.find_element_by_xpath("//h2[text() = 'Warning: This notebook was not authored by Google.']"):
+        driver.find_element_by_xpath("//paper-button[@id='ok']").click()
 
     # <colab-dialog class="yes-no-dialog" # <paper-dialog role="dialog" # #shadow-root (open) # usage limits usage-limit
     try:
@@ -58,6 +66,7 @@ def setup_anime_colab():
         # import sys
         # print("nope",sys.exc_info())
         pass
+    WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH, "//div[@class='cell code icon-scrolling']"))) # //div[@class='cell code icon-scrolling focused'] pending running
 
     return driver
 
@@ -78,14 +87,14 @@ def run_anime_colab(driver, high="a"):
     # time.sleep(3)
 
     driver.find_element_by_xpath("(//colab-run-button)[3]").click()
-    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//div[@class='outputview']/iframe")))
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@class='outputview']/iframe")))
     iframe=driver.find_element_by_xpath("//div[@class='outputview']/iframe")
     driver.switch_to.frame(iframe)
     # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//div[@class='output_subarea output_image']/img")))
     # img = driver.find_element_by_xpath("//div[@class='output_subarea output_image']/img").get_attribute("src")
-    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[1]/img")))
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[1]/img")))
     img1 = driver.find_element_by_xpath("(//div[@class='output_subarea output_image'])[1]/img").get_attribute("src")
-    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[2]/img")))
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[2]/img")))
     img2 = driver.find_element_by_xpath("(//div[@class='output_subarea output_image'])[2]/img").get_attribute("src")
     # print(img1[:100])
     # print(img2[:100])
@@ -93,6 +102,7 @@ def run_anime_colab(driver, high="a"):
     driver.switch_to.default_content()
     return img1,img2
 
+# close
 
 # search_box = driver.find_element_by_name('q')
 # search_box.send_keys('ChromeDriver')
