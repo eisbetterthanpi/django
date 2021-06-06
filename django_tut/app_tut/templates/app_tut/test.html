@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>😬</title>
+</head>
+<body>
+  <h1>python base.html</h1>
+
+  <form method="POST" id="form1">
+    {% csrf_token %}
+
+    <input type="submit" name="btn" value="yes" class="btn">
+    <input type="submit" name="btn" value="no" class="btn">
+  </form>
+  {{ val }}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+      $(".btn").click(function(){
+          setTimeout(function(){ disableButton(); }, 0);
+      });
+      function disableButton(){
+          $(".btn").prop('disabled', true);
+      }
+  });
+
+</script>
+</body>
+</html>

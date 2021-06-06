@@ -2,29 +2,35 @@
 <html>
 <head>
   <title>😬</title>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+      $(".btn").click(function(){ //https://stackoverflow.com/questions/17106885/disable-submit-button-only-after-submit
+          setTimeout(function(){ disableButton(); }, 0);
+      });
+      function disableButton(){
+          $(".btn").prop('disabled', true);
+      }
+  });
+
+</script>
+
 </head>
 <body>
   <h1>anime.html</h1>
-
-    <form action="" method="post" novalidate>
-    <table>
-      {{ form }}
-      <tr>
-        <!-- <td>&nbsp;</td> -->
-        <!-- <td><input type="submit" value="Submit"></td> -->
-        <!-- <input type="submit" name="btn_l" value="left"><img src={{ img1 }}></dir></input>
-        <input type="submit" name="btn_r" value="right"><img src={{ img2 }}></dir></input> -->
-        <button type="submit" name="btn_l" value="left"><img src={{ img1 }}></dir></button>
-        <button type="submit" name="btn_r" value="right"><img src={{ img2 }}></dir></button>
-      </tr>
-    </table>
+  <form method="POST" id="form1">
     {% csrf_token %}
-    </form>
 
-  {% if val %}
-  <p class="success"> Thank you. {{ val }}</p>
-  {% endif %}
-  <!-- <img src={{ img1 }}></dir>
-  <img src={{ img2 }}></dir> -->
+    {% if submitted %}
+    <button type="submit" name="btn" value="start" class="btn">start</button>
+    {% endif %}
+
+    {% if not submitted %}
+    <button type="submit" name="btn" value="left" class="btn"><img src={{ img1 }}></dir></button>
+    <button type="submit" name="btn" value="right" class="btn"><img src={{ img2 }}></dir></button>
+    {% endif %}
+
+    </form>
 </body>
 </html>
