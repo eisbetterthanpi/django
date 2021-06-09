@@ -58,9 +58,20 @@ def inputval(request):
 
     else:
         form = AnimeForm() #new form
-    print("setup")
-    inputval.driver = setup_anime_colab()
-    print("done")
+    # print("setup") #old setup
     submitted = True
     return render(request, 'app_tut/anime.html', {'form': form, 'submitted': submitted})
+    # return render(request, 'app_tut/anime.html', {'img1': img1, 'img2': img2, 'form': form, 'submitted': submitted})
+
+
+
+from django.http import JsonResponse
+def load(request):
+    print("load setup")
+    inputval.driver = setup_anime_colab()
+    # time.sleep(3)
+    print("load done")
+    submitted = True
+    return JsonResponse({'image': 'image url here'})
+    # return render(request, 'app_tut/anime.html', {'form': form, 'submitted': submitted})
     # return render(request, 'app_tut/anime.html', {'img1': img1, 'img2': img2, 'form': form, 'submitted': submitted})
