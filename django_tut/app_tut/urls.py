@@ -22,6 +22,7 @@ urlpatterns = [
     # path('python_base/', views.python_base, name="app_tut-python_base"),
     path('pybase/', pybase.inputval, name='pybase'),
     path('anime/', anime.inputval, name='anime'),
+    path('anime-load/', anime.load, name='anime-load'),
     path('test/', test.inputval, name='test'),
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', views.button),
