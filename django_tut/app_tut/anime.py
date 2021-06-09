@@ -29,26 +29,13 @@ def inputval(request):
         if form.is_valid():
             cd = form.clean()
             # high = form.cleaned_data.get("btn")
-            # val=cd['btn']
-
             print(request.POST, request.POST["btn"])
-            # if 'left' in request.POST:
-            # if request.POST["btn"] == 'left':
-            if 'btn_l' in request.POST:
-                # print("submit left")
-                high="left"
-            elif 'btn_r' in request.POST:
-                high="right"
-            else:
-                val=cd['btn']
-                high=val
-                # print("val",val)
-
+            high=cd['btn']
             print(high)
 
             print("start load")
             img1, img2 = run_anime_colab(inputval.driver, high) #driver drivers[0]
-            # time.sleep(3)
+            # time.sleep(1)
             print("finish load")
             # img1="F:/html code/poem n 1.png"
             # img2="F:/html code/poem n 2.png"
@@ -64,14 +51,19 @@ def inputval(request):
     # return render(request, 'app_tut/anime.html', {'img1': img1, 'img2': img2, 'form': form, 'submitted': submitted})
 
 
-
 from django.http import JsonResponse
-def load(request):
+def load(request): #initial setup loading
     print("load setup")
     inputval.driver = setup_anime_colab()
-    # time.sleep(3)
+    # time.sleep(1)
     print("load done")
     submitted = True
     return JsonResponse({'image': 'image url here'})
     # return render(request, 'app_tut/anime.html', {'form': form, 'submitted': submitted})
     # return render(request, 'app_tut/anime.html', {'img1': img1, 'img2': img2, 'form': form, 'submitted': submitted})
+
+def no_update(request):
+    print("no update",request.POST)
+    img=run_zs(inputval.driver)
+    # img="F:/html code/poem n 1.png"
+    return JsonResponse({'img': img})

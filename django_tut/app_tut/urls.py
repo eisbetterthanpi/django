@@ -23,6 +23,7 @@ urlpatterns = [
     path('pybase/', pybase.inputval, name='pybase'),
     path('anime/', anime.inputval, name='anime'),
     path('anime-load/', anime.load, name='anime-load'),
+    path('anime-zs/', anime.no_update, name='anime-zs'),
     path('test/', test.inputval, name='test'),
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', views.button),
