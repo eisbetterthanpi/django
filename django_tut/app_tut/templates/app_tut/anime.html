@@ -11,6 +11,7 @@
       });
       function disableButton(){
           $(".btn").prop('disabled', true);
+          $("#zs").prop('disabled', true);
       }
   });
 </script>
@@ -32,13 +33,34 @@ $.ajax({ //https://stackoverflow.com/questions/45051744/django-display-loading-i
     $("#form1").show();
     // alert("ajax done");
   },
-  error: function(xhr){
-    alert(xhr.responseText); //Remove this when all is fine.
-  }
+  // error: function(xhr){alert(xhr.responseText);}
 });
 </script>
 {% endif %}
 
+
+<script type="text/javascript"> //for zs
+  $(document).ready(function(){
+      $("#zs").click(function(){
+      $("#zs").prop('disabled', true);
+      $(".btn").prop('disabled', true);
+        $.ajax({
+          url: '/app_tut/anime-zs/',
+          type: 'GET',
+          dataType: 'json',
+          success: function(result){
+            $("#zs-out").attr("src",result.img);
+            $(".btn").prop('disabled', false);
+          },
+          error: function(xhr){alert(xhr.responseText);}
+        });
+          // setTimeout(function(){ disableButton(); }, 0);
+      });
+      // function disableButton(){
+      //     $(".btn").prop('disabled', true);
+      // }
+  });
+</script>
 
 </head>
 <body>
@@ -53,8 +75,17 @@ $.ajax({ //https://stackoverflow.com/questions/45051744/django-display-loading-i
     {% endif %}
 
     {% if not submitted %}
-    <button type="submit" name="btn" value="left" class="btn"><img src={{ img1 }}></dir></button>
-    <button type="submit" name="btn" value="right" class="btn"><img src={{ img2 }}></dir></button>
+    <div class='wrapper'>
+    <button type="submit" name="btn" value="left" class="btn"><img src={{ img1 }}></button>
+    <button type="submit" name="btn" value="right" class="btn"><img src={{ img2 }}></button>
+    </dir>
+    <br>
+    <br>
+    <button type="button" id="zs">get zs</button>
+    <br>
+    <br>
+    <img id="zs-out">
+
     {% endif %}
 
     </form>
