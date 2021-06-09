@@ -13,12 +13,38 @@
           $(".btn").prop('disabled', true);
       }
   });
-
 </script>
+
+{% if submitted %}
+<script>
+$(document).ready(function(){
+  $("#form1").hide();
+  $("#loading").show();
+});
+$.ajax({ //https://stackoverflow.com/questions/45051744/django-display-loading-image-while-a-bash-process-is-running
+  url: '/app_tut/anime-load/',
+  type: 'GET',
+  dataType: 'json',
+  success: function(result){
+    // $('#image-id').attr('src', result.image);
+    // $("#loading").prop("disabled", true);
+    $("#loading").hide(); // use hide for div element
+    $("#form1").show();
+    // alert("ajax done");
+  },
+  error: function(xhr){
+    alert(xhr.responseText); //Remove this when all is fine.
+  }
+});
+</script>
+{% endif %}
+
 
 </head>
 <body>
   <h1>anime.html</h1>
+  <div id="loading" name="load" class="load" style='display:none'>loading, pls wait</div>
+
   <form method="POST" id="form1">
     {% csrf_token %}
 
