@@ -38,10 +38,6 @@ def setup_anime_colab():
         fix_hairline=True,
         )
 
-    hour = time.strftime("%H")
-    authuser=int(hour)//8
-    # driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO')
-    driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO?authuser={}'.format(authuser)) #0,1,2 bob,derek,archive
 
     # time.sleep(3)
     from selenium.webdriver.support.ui import WebDriverWait
@@ -49,25 +45,36 @@ def setup_anime_colab():
     from selenium.webdriver.common.by import By
     from selenium.webdriver.common.action_chains import ActionChains
 
+    hour = time.strftime("%H")
+    # authuser=int(hour)//8
+    authuser=0
+    # driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO')
+    # driver.get('https://youtube.com')
+    # time.sleep(3)
+    driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO?authuser={}'.format(authuser)) #0,1,2 bob,derek,archive
+
+    print("authuser",authuser)
     # print(driver.title)
     # driver.find_element_by_xpath("command='runall'").click() #this is from 1
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "(//colab-run-button)[1]")))
     driver.find_element_by_xpath("(//colab-run-button)[1]").click() #[this] is from 1
 
     # notebook not authored by google
-    if driver.find_element_by_xpath("//h2[text() = 'Warning: This notebook was not authored by Google.']"):
-        driver.find_element_by_xpath("//paper-button[@id='ok']").click()
-
+    # if driver.find_element_by_xpath("//h2[text() = 'Warning: This notebook was not authored by Google.']"):
+    #     print("not authored by google")
+    #     driver.find_element_by_xpath("//paper-button[@id='ok']").click()
+    # time.sleep(3)
     # <colab-dialog class="yes-no-dialog" # <paper-dialog role="dialog" # #shadow-root (open) # usage limits usage-limit
-    try:
-        driver.find_element_by_xpath("//div[@class='usage limits usage-limit']")
-        print("usage limit? :)")
-    except: # NoSuchElementException
-        # import sys
-        # print("nope",sys.exc_info())
-        pass
-    WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH, "//div[@class='cell code icon-scrolling']"))) # //div[@class='cell code icon-scrolling focused'] pending running
+    # if driver.find_element_by_xpath("//h2[contains(text(),'Cannot connect to GPU backend')]"):
+    #     print("gpud")
+    #     driver.find_element_by_xpath("//paper-button[@id='cancel']").click()
+        # authuser=(authuser+1)%3
+        # driver.get('https://colab.research.google.com/drive/1GPgQZGxFgQp9vJbaLJTp9rB-PEhECbXO?authuser={}'.format(authuser)) #0,1,2 bob,derek,archive
 
+    # WebDriverWait(driver, 40).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='cell code icon-scrolling'])[2]"))) #until n cells not running   nope # //div[@class='cell code icon-scrolling focused'] pending running
+    print("breajhj")
+    WebDriverWait(driver, 59).until(EC.invisibility_of_element_located((By.XPATH, "//div[contains(@class,'running') or contains(@class,'pending')]")))
+    print("wawited")
     return driver
 
 
@@ -88,19 +95,44 @@ def run_anime_colab(driver, high="a"):
 
     driver.find_element_by_xpath("(//colab-run-button)[3]").click()
     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@class='outputview']/iframe")))
-    iframe=driver.find_element_by_xpath("//div[@class='outputview']/iframe")
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='outputview']/iframe)[1]")))
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='outputview']/iframe)[2]"))) # both frames up, bec started with zs frame
+    # iframe=driver.find_element_by_xpath("//div[@class='outputview']/iframe")
+    iframe=driver.find_element_by_xpath("(//div[@class='outputview']/iframe)[1]")
     driver.switch_to.frame(iframe)
     # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//div[@class='output_subarea output_image']/img")))
     # img = driver.find_element_by_xpath("//div[@class='output_subarea output_image']/img").get_attribute("src")
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[1]/img")))
+    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[1]/img")))
     img1 = driver.find_element_by_xpath("(//div[@class='output_subarea output_image'])[1]/img").get_attribute("src")
-    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[2]/img")))
+    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[2]/img")))
     img2 = driver.find_element_by_xpath("(//div[@class='output_subarea output_image'])[2]/img").get_attribute("src")
     # print(img1[:100])
     # print(img2[:100])
 
     driver.switch_to.default_content()
     return img1,img2
+
+
+def run_zs(driver):
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.common.by import By
+    node = driver.find_element_by_xpath("(//div[contains(@class,'editor-scrollable')])[3]") #1,2,3
+    node.click()
+
+    driver.find_element_by_xpath("(//colab-run-button)[4]").click()
+    # WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@class='outputview']/iframe")))
+    WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='outputview']/iframe)[2]")))
+    # iframe=driver.find_element_by_xpath("//div[@class='outputview']/iframe")
+    iframe=driver.find_element_by_xpath("(//div[@class='outputview']/iframe)[2]")
+    driver.switch_to.frame(iframe)
+    # WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "//div[@class='output_subarea output_image']/img")))
+    # img = driver.find_element_by_xpath("//div[@class='output_subarea output_image']/img").get_attribute("src")
+    WebDriverWait(driver, 7).until(EC.presence_of_element_located((By.XPATH, "(//div[@class='output_subarea output_image'])[1]/img")))
+    img = driver.find_element_by_xpath("(//div[@class='output_subarea output_image'])[1]/img").get_attribute("src")
+    driver.switch_to.default_content()
+    return img
+
 
 # close
 
